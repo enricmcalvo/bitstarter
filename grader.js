@@ -46,6 +46,7 @@ var loadChecks = function(checksfile) {
     return JSON.parse(fs.readFileSync(checksfile));
 };
 
+
 var checkHtmlFile = function(htmlfile, checksfile) {
     $ = cheerioHtmlFile(htmlfile);
     var checks = loadChecks(checksfile).sort();
@@ -63,25 +64,45 @@ var clone = function(fn) {
     return fn.bind({});
 };
 
+
+var checkUrl = function(url, checksfile) {
+    rest.get(url).on('complete', function(data) {
+        $ = cheerio.load(data);
+        var checks = loadChecks(checksfile).sort();
+        var out = {};
+        for(var ii in checks) {
+            var present = $(checks[ii]).length > 0;
+            out[checks[ii]] = present;
+        }
+        var outJson = JSON.stringify(out, null, 4);
+        console.log(outJson);
+    });
+}
+
 if(require.main == module) {
     program
         .option('-c, --checks <check_file>', 'Path to checks.json', clone(assertFileExists), CHECKSFILE_DEFAULT)
         .option('-f, --file <html_file>', 'Path to index.html', clone(assertFileExists), HTMLFILE_DEFAULT)
         .option('-u, --url <check_url>', 'URL to index.html', URL_DEFAULT)
         .parse(process.argv);
-    var urldata = rest.get(program.url).on('complete', function(data) {
-        return data;
-    });
-    var data2check = [];
-    if (program.url){
-        data2check = urldata;
+    if (program.url) {
+        rest.get(program.url).on('complete', function(data) {
+        $ = cheerio.load(data);
+        var checks = loadChecks(program.checks).sort();
+        var out = {};
+        for(var ii in checks) {
+            var present = $(checks[ii]).length > 0;
+            out[checks[ii]] = present;
+        }
+        var outJson = JSON.stringify(out, null, 4);
+        console.log(outJson);
+        });
     } else {
-        data2check = program.file;
+        checkHtmlFile (program.file, program.checks);
+        var checkJson = checkHtmlFile(program.file, program.checks);
+        var outJson = JSON.stringify(checkJson, null, 4);
+        console.log(outJson);
     }
-
-    var checkJson = checkHtmlFile(data2check, program.checks);
-    var outJson = JSON.stringify(checkJson, null, 4);
-    console.log(outJson);
 } else {
     exports.checkHtmlFile = checkHtmlFile;
 }
