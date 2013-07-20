@@ -3,13 +3,43 @@
   <head>
     <meta charset="utf-8">
     <title>My First Bitstarter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link type="text/css" rel="stylesheet" 
           href="https://d396qusza40orc.cloudfront.net/startup%2Fcode%2Fbootstrap-2.3.2.css">
     <style type="text/css">
+
+
+      /* Large Desktop */
+      @media (min-width: 980px){
+        body { 
+            padding-top: 20px;
+        }
+        .linediv-l { 
+          border-right: 1px white soild;
+        }
+        .linediv-r { 
+          border-right: 1px white soild;
+        }
+        
+      /* All form factors */
       body {
-        padding-top: 20px;
-        padding-bottom: 40px;
+          font-family: 'Open Sans', Helvetica, Arial, sans-serif;
       }
+      .heading, .subheading {
+          font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
+          text-align: center;
+      }
+      p.lead{
+          padding-top: 1.5%;
+          font-size: 24px;
+          line-height: 30px;
+      }
+      p {
+          font-size: 18px;
+          line-height: 24px;
+      }
+
+
       .container {
         width: 960px;
       }
@@ -51,17 +81,18 @@
           About
         </div>
       </div>
-      <div class="row heading">
+      <div class="row-fluid heading">
         <div class="span12">
-          <h1>Bitstarter Title</h1>
+          <h1>My 1st Product</h1>
         </div>
       </div> 
-     <div class="row subheading">
+     <div class="row-fluid subheading">
         <div class="span12">
-          <p class="lead">This is my first bitstarter project.</p>
+          <!-- http://twitter.github.io/bootstrap/base-css.html#typography -->
+          <p class="lead">Awesome product description.</p>
         </div>
       </div>
-      <div class="row pitch">
+      <div class="row-fluid pitch">
         <div class="span6 video">
           Video
         </div>
